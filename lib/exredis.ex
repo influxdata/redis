@@ -80,14 +80,25 @@ defmodule Exredis do
   """
   @spec start_link :: start_link
   def start_link(%Exredis.Config.Config{} = config) do
-    :eredis.start_link([
+    [
       {:host, String.to_charlist(config.host)},
       {:port, config.port},
       {:database, config.db},
       {:password, String.to_charlist(config.password)},
-      {:reconnect_sleep, config.reconnect},
-      {:tls, Application.get_env(:exredis, :tls, [{:verify, :verify_none}])}
-    ])
+      {:reconnect_sleep, config.reconnect}
+    ]
+    |> force_tls
+    |> :eredis.start_link()
+  end
+
+  def force_tls(opts) do
+    tls_opt = Application.get_env(:exredis, :tls)
+
+    if tls_opt do
+      [tls_opt | opts]
+    else
+      [{:verify, :verify_none} | opts]
+    end
   end
 
   @doc """
