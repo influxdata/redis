@@ -87,19 +87,12 @@ defmodule Exredis do
       {:password, String.to_charlist(config.password)},
       {:reconnect_sleep, config.reconnect}
     ]
-    |> force_tls
+    |> force_tls(Application.get_env(:exredis, :force_tls, true))
     |> :eredis.start_link()
   end
 
-  def force_tls(opts) do
-    tls_opt = Application.get_env(:exredis, :tls)
-
-    if tls_opt do
-      [tls_opt | opts]
-    else
-      [{:verify, :verify_none} | opts]
-    end
-  end
+  def force_tls(opts, true), do: [{:verify, :verify_none} | opts]
+  def force_tls(opts, _false), do: opts
 
   @doc """
   Allows poolboy to connect to this by passing a list of args
