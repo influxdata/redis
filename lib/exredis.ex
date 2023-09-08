@@ -92,7 +92,7 @@ defmodule Exredis do
     )
   end
 
-  def force_tls(opts, true), do: [{:verify, :verify_none} | opts]
+  def force_tls(opts, true), do: [{:tls, [{:verify, :verify_none}]} | opts]
   def force_tls(opts, false), do: opts
 
   @doc """
