@@ -86,7 +86,7 @@ defmodule Exredis do
       {:database, config.db},
       {:password, String.to_charlist(config.password)},
       {:reconnect_sleep, config.reconnect},
-      {:tls, config.tls}
+      {:tls, Application.get_env(:exredis, :tls, [{:verify, :verify_none}])}
     ])
   end
 
