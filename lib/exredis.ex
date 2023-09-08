@@ -93,7 +93,7 @@ defmodule Exredis do
   end
 
   def force_tls(opts, true), do: [{:verify, :verify_none} | opts]
-  def force_tls(opts, _false), do: opts
+  def force_tls(opts, false), do: opts
 
   @doc """
   Allows poolboy to connect to this by passing a list of args

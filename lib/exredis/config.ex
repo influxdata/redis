@@ -11,7 +11,7 @@ defmodule Exredis.Config do
     reconnect: :no_reconnect,
     max_queue: :infinity,
     behaviour: :drop,
-    tls: true
+    force_tls: true
   }
 
   def settings, do: [:host, :port, :password, :db, :reconnect, :max_queue, :behaviour]
