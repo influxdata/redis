@@ -80,15 +80,16 @@ defmodule Exredis do
   """
   @spec start_link :: start_link
   def start_link(%Exredis.Config.Config{} = config) do
-    [
-      {:host, String.to_charlist(config.host)},
-      {:port, config.port},
-      {:database, config.db},
-      {:password, String.to_charlist(config.password)},
-      {:reconnect_sleep, config.reconnect}
-    ]
-    |> force_tls(config.force_tls)
-    |> :eredis.start_link()
+    :eredis.start_link(
+      [
+        {:host, String.to_charlist(config.host)},
+        {:port, config.port},
+        {:database, config.db},
+        {:password, String.to_charlist(config.password)},
+        {:reconnect_sleep, config.reconnect}
+      ]
+      |> force_tls(config.force_tls)
+    )
   end
 
   def force_tls(opts, true), do: [{:verify, :verify_none} | opts]
@@ -118,16 +119,25 @@ defmodule Exredis do
   Returns a tuple `{:ok, pid}`.
   """
   @spec start_link(binary, integer, integer, binary, reconnect_sleep) :: start_link
-  def start_link(host, port, database \\ 0, password \\ "", reconnect_sleep \\ :no_reconnect)
+  def start_link(
+        host,
+        port,
+        database \\ 0,
+        password \\ "",
+        reconnect_sleep \\ :no_reconnect,
+        force_tls \\ true
+      )
       when is_binary(host) do
-    :eredis.start_link([
-      {:host, String.to_charlist(host)},
-      {:port, port},
-      {:database, database},
-      {:password, String.to_charlist(password)},
-      {:reconnect_sleep, reconnect_sleep},
-      {:tls, [{:verify, :verify_none}]}
-    ])
+    :eredis.start_link(
+      [
+        {:host, String.to_charlist(host)},
+        {:port, port},
+        {:database, database},
+        {:password, String.to_charlist(password)},
+        {:reconnect_sleep, reconnect_sleep}
+      ]
+      |> force_tls(force_tls)
+    )
   end
 
   @doc """
@@ -141,14 +151,16 @@ defmodule Exredis do
   def start_link do
     config = Exredis.Config.fetch_env()
 
-    :eredis.start_link([
-      {:host, String.to_charlist(config.host)},
-      {:port, config.port},
-      {:database, config.db},
-      {:password, String.to_charlist(config.password)},
-      {:reconnect_sleep, config.reconnect},
-      {:tls, [{:verify, :verify_none}]}
-    ])
+    :eredis.start_link(
+      [
+        {:host, String.to_charlist(config.host)},
+        {:port, config.port},
+        {:database, config.db},
+        {:password, String.to_charlist(config.password)},
+        {:reconnect_sleep, config.reconnect}
+      ]
+      |> force_tls(config.force_tls)
+    )
   end
 
   @doc """
