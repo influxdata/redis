@@ -1,6 +1,6 @@
 defmodule Exredis.Config do
   defmodule Config do
-    defstruct host: nil, port: nil, password: nil, db: nil, reconnect: nil, max_queue: nil, behaviour: nil
+    defstruct host: nil, port: nil, password: nil, db: nil, reconnect: nil, max_queue: nil, behaviour: nil, force_tls: true
   end
 
   @default_config %{
@@ -10,10 +10,11 @@ defmodule Exredis.Config do
     db: 0,
     reconnect: :no_reconnect,
     max_queue: :infinity,
-    behaviour: :drop
+    behaviour: :drop,
+    force_tls: true
   }
 
-  def settings, do: [:host, :port, :password, :db, :reconnect, :max_queue, :behaviour]
+  def settings, do: [:host, :port, :password, :db, :reconnect, :max_queue, :behaviour, :force_tls]
 
   def fetch_env do
     uri_config = Application.get_env(:exredis, :url)
