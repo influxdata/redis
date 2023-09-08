@@ -23,7 +23,7 @@ defmodule Exredis.Mixfile do
   # Dependencies
   defp deps do
     [
-      {:eredis, ">= 1.7.0"},
+      {:eredis, ">= 1.7.1"},
       {:benchfella, "~> 0.3.0", only: :dev},
       {:earmark, "~> 1.2", only: :dev},
       {:ex_doc, "~> 0.19", only: :dev}

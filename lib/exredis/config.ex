@@ -1,6 +1,6 @@
 defmodule Exredis.Config do
   defmodule Config do
-    defstruct host: nil, port: nil, password: nil, db: nil, reconnect: nil, max_queue: nil, behaviour: nil
+    defstruct host: nil, port: nil, password: nil, db: nil, reconnect: nil, max_queue: nil, behaviour: nil, tls: nil
   end
 
   @default_config %{
@@ -10,7 +10,8 @@ defmodule Exredis.Config do
     db: 0,
     reconnect: :no_reconnect,
     max_queue: :infinity,
-    behaviour: :drop
+    behaviour: :drop,
+    tls: [{:verify, :verify_none}]
   }
 
   def settings, do: [:host, :port, :password, :db, :reconnect, :max_queue, :behaviour]
