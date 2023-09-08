@@ -87,7 +87,7 @@ defmodule Exredis do
       {:password, String.to_charlist(config.password)},
       {:reconnect_sleep, config.reconnect}
     ]
-    |> force_tls(Application.get_env(:exredis, :force_tls, true))
+    |> force_tls(config.force_tls)
     |> :eredis.start_link()
   end
 
