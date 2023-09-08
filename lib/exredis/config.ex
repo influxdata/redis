@@ -14,7 +14,7 @@ defmodule Exredis.Config do
     force_tls: true
   }
 
-  def settings, do: [:host, :port, :password, :db, :reconnect, :max_queue, :behaviour]
+  def settings, do: [:host, :port, :password, :db, :reconnect, :max_queue, :behaviour, :force_tls]
 
   def fetch_env do
     uri_config = Application.get_env(:exredis, :url)
