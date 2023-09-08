@@ -20,7 +20,17 @@ defmodule Exredis do
         reconnect_sleep \\ :no_reconnect
       ) do
     config = Exredis.Config.parse(connection_string)
-    start_link(config.host, config.port, config.db, config.password, reconnect_sleep) |> elem(1)
+    app_config = Exredis.Config.fetch_env()
+
+    start_link(
+      config.host,
+      config.port,
+      config.db,
+      config.password,
+      reconnect_sleep,
+      app_config.force_tls
+    )
+    |> elem(1)
   end
 
   @doc false
@@ -125,7 +135,7 @@ defmodule Exredis do
         database \\ 0,
         password \\ "",
         reconnect_sleep \\ :no_reconnect,
-        force_tls \\ true
+        force_tls \\ Application.get_env(:exredis)
       )
       when is_binary(host) do
     :eredis.start_link(
